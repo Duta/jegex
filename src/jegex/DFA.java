@@ -6,12 +6,12 @@ import java.util.List;
 /**
  * Represents a Deterministic Finite Automaton
  */
-public class DFA {
-    private List<Transition> transitions;
+public class DFA<T> {
+    private List<Transition<T>> transitions;
     private List<Integer> acceptingStates;
 
     public DFA() {
-        transitions = new ArrayList<Transition>();
+        transitions = new ArrayList<Transition<T>>();
         acceptingStates = new ArrayList<Integer>();
     }
 
@@ -33,13 +33,12 @@ public class DFA {
 
     /**
      * Returns true if and only if
-     * the given string is accepted
+     * the given input is accepted
      * by this DFA.
      */
-    public boolean acceptsString(String inputString) {
-        char[] inputCharacters = inputString.toCharArray();
+    public boolean accepts(T[] inputArray) {
         int state = 0;
-        for(char input : inputCharacters) {
+        for(T input : inputArray) {
             state = getTransition(state, input);
             if(state == -1) {
                 return false;
@@ -52,8 +51,8 @@ public class DFA {
      * Adds a transition from one state to
      * another upon some input character.
      */
-    public void addTransition(int startState, char input, int endState) {
-        transitions.add(new Transition(startState, input, endState));
+    public void addTransition(int startState, T input, int endState) {
+        transitions.add(new Transition<T>(startState, input, endState));
     }
 
     /**
@@ -79,7 +78,7 @@ public class DFA {
      * given state is an accepting state.
      */
     public boolean isAcceptingState(int state) {
-        for(Integer acceptingState : acceptingStates) {
+        for(int acceptingState : acceptingStates) {
             if(state == acceptingState) {
                 return true;
             }
@@ -94,8 +93,8 @@ public class DFA {
      * -1 is returned if the transition
      * does not exist.
      */
-    private int getTransition(int startState, char input) {
-        for(Transition t : transitions) {
+    private int getTransition(int startState, T input) {
+        for(Transition<T> t : transitions) {
             int endState = t.getEndState(startState, input);
             if(endState != -1) {
                 return endState;
@@ -104,20 +103,20 @@ public class DFA {
         return -1;
     }
 
-    private static class Transition {
+    private static class Transition<T> {
         private int startState;
-        private char input;
+        private T input;
         private int endState;
 
-        public Transition(int startState, char input, int endState) {
+        public Transition(int startState, T input, int endState) {
             this.startState = startState;
             this.input = input;
             this.endState = endState;
         }
 
-        public int getEndState(int startState, char input) {
+        public int getEndState(int startState, T input) {
             if(this.startState == startState
-            && this.input == input) {
+            && this.input.equals(input)) {
                 return endState;
             } else {
                 return -1;
