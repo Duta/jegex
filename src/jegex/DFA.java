@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Deterministic Finite Automata
+ * Represents a Deterministic Finite Automaton
  */
 public class DFA {
     private List<Transition> transitions;
