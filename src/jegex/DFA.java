@@ -78,12 +78,7 @@ public class DFA<T> {
      * given state is an accepting state.
      */
     public boolean isAcceptingState(int state) {
-        for(int acceptingState : acceptingStates) {
-            if(state == acceptingState) {
-                return true;
-            }
-        }
-        return false;
+        return acceptingStates.contains(state);
     }
 
     /**
